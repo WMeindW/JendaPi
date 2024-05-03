@@ -5,6 +5,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.example.Executor.Exec;
 import org.example.Log.Logger;
 
 import java.io.IOException;
@@ -22,19 +23,19 @@ public class Client extends Thread implements Runnable {
         while (actionState != -1) {
             try {
                 HttpResponse response = client.execute(request);
-                System.out.println(EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8));
+                String value = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+                System.out.println(Exec.execute(Integer.parseInt(value)));
             } catch (IOException e) {
                 Logger.errorLog(e.toString());
                 continue;
             }
             synchronized (this) {
                 try {
-                    this.wait(100);
+                    this.wait(1000);
                 } catch (InterruptedException e) {
                     interrupt();
                 }
             }
-            System.out.println(actionState);
         }
     }
 }
