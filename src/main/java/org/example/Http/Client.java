@@ -7,6 +7,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.example.Executor.Exec;
 import org.example.Log.Logger;
+import org.example.Service.Service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +25,11 @@ public class Client extends Thread implements Runnable {
             try {
                 HttpResponse response = client.execute(request);
                 String value = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-                System.out.println(Exec.execute(Integer.parseInt(value)));
+                if (Integer.parseInt(value) != Service.value) {
+                    Exec.execute(Integer.parseInt(value));
+                    Service.value = Integer.parseInt(value);
+                }
+
             } catch (IOException e) {
                 Logger.errorLog(e.toString());
                 continue;

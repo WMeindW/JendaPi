@@ -14,6 +14,7 @@ public class Exec {
             Logger.errorLog(e.toString());
             return false;
         }
+        Logger.writeLog("Executed value: " + value);
         return true;
     }
 }
